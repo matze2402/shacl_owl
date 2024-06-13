@@ -1,22 +1,40 @@
 import matplotlib.pyplot as plt
+import networkx as nx
 import os
 
-# Beispiel-Daten
-data = {
-    'A_1': [1, 2, 3],
-    'A_2': [4, 5, 6],
-    'A_3': [7, 8, 9],
-    'A_4': [10, 11, 12]
-}
+# Beispiel-Daten aus der PowerPoint
+nodes_a = ['A_1', 'A_2', 'A_3', 'A_4']
+nodes_b = ['B_1', 'B_2', 'B_3', 'B_4']
+edges = [
+   ('A_1', 'B_1', 'rb_1'),
+   ('A_2', 'B_3', 'rb_3'),
+   ('A_3', 'B_2', 'rb_2'),
+   ('A_4', 'B_4', None)
+]
 
 # Verzeichnis für Diagramme erstellen
 output_dir = 'diagrams'
 os.makedirs(output_dir, exist_ok=True)
 
-# Diagramme erstellen
-for key, values in data.items():
-    plt.figure()
-    plt.plot(values)
-    plt.title(f'Diagramm für {key}')
-    plt.savefig(f'{output_dir}/{key}.png')
-    plt.close()
+# Graph erstellen
+G = nx.DiGraph()
+
+# Knoten hinzufügen
+for node in nodes_a + nodes_b:
+   G.add_node(node)
+
+# Kanten hinzufügen
+for edge in edges:
+   from_node, to_node, relation = edge
+   G.add_edge(from_node, to_node, label=relation)
+
+# Diagramm erstellen
+pos = nx.spring_layout(G)
+plt.figure(figsize=(10, 7))
+nx.draw(G, pos, with_labels=True, node_size=3000, node_color='lightblue', font_size=10, font_weight='bold')
+nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d['label'] for u, v, d in G.edges(data=True)})
+
+# Diagramm speichern
+plt.title('Automatisiertes Diagramm')
+plt.savefig(f'{output_dir}/automated_diagram.png')
+plt.close()
