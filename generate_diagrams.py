@@ -6,16 +6,16 @@ import os
 nodes_a = ['A_1', 'A_2', 'A_3', 'A_4']
 nodes_b = ['B_1', 'B_2', 'B_3', 'B_4']
 edges = [
-   #('A_1', 'B_1', None),
+   
    ('B_1', 'B_2', 'rb_1'),
    ('A_1', 'A_2', 'ra_1'),
-   #('A_2', 'B_3', None),
+   
    ('A_2', 'A_3' 'ra_2'),
    ('A_2', 'A_4', 'ra_3'),
-   #('A_3', 'B_2', None),
+   
    ('B_2', 'B_3', 'rb_2'),
-   ('B_3', 'B_4', 'rb_3'),
-   #('A_4', 'B_4', None)
+   ('B_3', 'B_4', 'rb_3')
+   
 ]
 
 # Verzeichnis für Diagramme erstellen
