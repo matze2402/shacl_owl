@@ -1,4 +1,4 @@
-import os
+ import os
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
@@ -10,7 +10,7 @@ folder_path = 'csv'  # Ändere dies entsprechend deinem Ordnerpfad
 output_dir = 'diagrams'
 os.makedirs(output_dir, exist_ok=True)
 
-# List für alle Kanten aus allen CSV-Dateien
+# Liste für alle Kanten aus allen CSV-Dateien
 edges = []
 
 # Durch alle Dateien im Ordner iterieren
@@ -49,8 +49,8 @@ nx.draw(G, pos, with_labels=True, node_size=3000, node_color='lightblue', font_s
 nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d['label'] for u, v, d in G.edges(data=True)})
 
 # Diagramm speichern
-plt.title('Automatisiertes Diagramm')
-plt.savefig(f'{output_dir}/automated_diagram.png')
+plt.title('Automatisiertes Diagramm für alle CSV-Dateien')
+plt.savefig(f'{output_dir}/automated_diagram_all.png')
 plt.close()
 
-print("Diagramm erfolgreich erstellt und gespeichert.")
+print("Diagramm für alle CSV-Dateien erfolgreich erstellt und gespeichert.")
