@@ -1,7 +1,7 @@
 from_node,to_node,relation
-dcat:description,mandatory,rdfs:Literal
-dct:title,mandatory,rdfs:Literal
-dct:accuralPeriodicity,optional,dct:Frequency
-dcat:prev,optional,DatasetinSeries
-dcat:next,optional,DatasetinSeries
-dcat:inSeries,optional,dcat:DatasetSeries
+dcat:description,rdfs:Literal,mandatory
+dct:title,rdfs:Literal,mandatory
+dct:accuralPeriodicity,dct:Frequency,optional
+dcat:prev,DatasetinSeries,optional
+dcat:next,DatasetinSeries,optional
+dcat:inSeries,dcat:DatasetSeries,optional
