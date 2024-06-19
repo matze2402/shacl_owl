@@ -22,8 +22,12 @@ for filename in os.listdir(folder_path):
         # Tabelle aus der CSV-Datei einlesen
         edges_df = pd.read_csv(file_path)
         
-        # Zu Kanten (from_node, to_node, relation, target) konvertieren und zur Liste hinzufügen
-        edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['relation'], edges_df['target'])))
+        # Überprüfen, ob die notwendigen Spalten vorhanden sind
+        if {'from_node', 'to_node', 'relation', 'target'}.issubset(edges_df.columns):
+            # Zu Kanten (from_node, to_node, relation, target) konvertieren und zur Liste hinzufügen
+            edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['Relation'], edges_df['Target'])))
+        else:
+            print(f"Fehlende Spalten in Datei: {filename}")
 
 # Graph erstellen
 G = nx.DiGraph()
@@ -33,7 +37,7 @@ all_nodes = set()
 for edge in edges:
     all_nodes.add(edge[0])
     all_nodes.add(edge[1])
-    all_nodes.add(edge[3])  # target auch als Knoten hinzufügen
+    all_nodes.add(edge[3])  # Target auch als Knoten hinzufügen
 
 for node in all_nodes:
     G.add_node(node)
