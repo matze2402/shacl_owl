@@ -53,7 +53,7 @@ pos = nx.spring_layout(G)
 plt.figure(figsize=(12, 9))
 
 # Knoten zeichnen
-nx.draw_networkx_nodes(G, pos, node_size=3000, node_color='lightblue')
+nx.draw_networkx_nodes(G, pos, node_size=100, node_color='lightblue')
 
 # Kanten zeichnen
 nx.draw_networkx_edges(G, pos, width=2, edge_color='gray')
