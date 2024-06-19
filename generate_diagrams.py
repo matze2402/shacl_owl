@@ -45,14 +45,14 @@ for node in all_nodes:
 # Kanten hinzufügen
 for edge in edges:
     from_node, to_node, relation, target = edge
-    G.add_edge(from_node, to_node, label=relation)
-    G.add_edge(to_node, target, label=f"target ({relation})")  # Verbindung zwischen to_node und target
+    G.add_edge(from_node, to_node, label=-)
+    G.add_edge(to_node, target, label=relation)  # Verbindung zwischen to_node und target
 
 # Diagramm erstellen
 
 plt.figure(figsize=(12, 9))
 
-pos = nx.spring_layout(G, k=10, iterations=50)
+pos = nx.spring_layout(G, k=50, iterations=50)
 
 # Knoten zeichnen
 nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')
