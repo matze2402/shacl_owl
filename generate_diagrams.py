@@ -49,11 +49,13 @@ for edge in edges:
     G.add_edge(to_node, target, label=f"target ({relation})")  # Verbindung zwischen to_node und target
 
 # Diagramm erstellen
-pos = nx.spring_layout(G)
+
 plt.figure(figsize=(12, 9))
 
+pos = nx.spring_layout(G, k=2, iterations=50)
+
 # Knoten zeichnen
-nx.draw_networkx_nodes(G, pos, node_size=100, node_color='lightblue')
+nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')
 
 # Kanten zeichnen
 nx.draw_networkx_edges(G, pos, width=2, edge_color='gray')
