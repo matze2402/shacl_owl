@@ -45,7 +45,7 @@ for node in all_nodes:
 # Kanten hinzufügen
 for edge in edges:
     from_node, to_node, relation, target = edge
-    G.add_edge(from_node, to_node, label=-)
+    G.add_edge(from_node, to_node)
     G.add_edge(to_node, target, label=relation)  # Verbindung zwischen to_node und target
 
 # Diagramm erstellen
