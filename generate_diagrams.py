@@ -46,22 +46,23 @@ for node in all_nodes:
 for edge in edges:
     from_node, to_node, relation, target = edge
     G.add_edge(from_node, to_node)
-    G.add_edge(to_node, target, label=relation)  # Verbindung zwischen to_node und target
+    G.add_edge(to_node, target, label=f"target ({relation})")  # Verbindung zwischen to_node und target
 
 # Diagramm erstellen
-
 plt.figure(figsize=(12, 9))
 
-pos = nx.spring_layout(G, k=50, iterations=50)
+# Verwenden Sie ein Layout, das die Knoten weiter auseinander hält
+pos = nx.spring_layout(G, k=2, iterations=50)  # Erhöhen Sie den Wert von k, um die Knoten weiter auseinander zu bringen
 
 # Knoten zeichnen
-nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')
+nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')  # Kleinere Knoten
 
 # Kanten zeichnen
 nx.draw_networkx_edges(G, pos, width=2, edge_color='gray')
 
-# Kantenbeschriftungen zeichnen
-nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d['label'] for u, v, d in G.edges(data=True)})
+# Kantenbeschriftungen zeichnen (nur für die Zielrelationen)
+edge_labels = {(u, v): d['label'] for u, v, d in G.edges(data=True) if 'label' in d}
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
 # Knotenbeschriftungen zeichnen
 nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
