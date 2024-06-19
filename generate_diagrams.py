@@ -52,7 +52,7 @@ for edge in edges:
 plt.figure(figsize=(12, 9))
 
 # Verwenden Sie ein Layout, das die Knoten weiter auseinander hält
-pos = nx.spring_layout(G, k=2, iterations=50)  # Erhöhen Sie den Wert von k, um die Knoten weiter auseinander zu bringen
+pos = nx.spring_layout(G, k=100, iterations=50)  # Erhöhen Sie den Wert von k, um die Knoten weiter auseinander zu bringen
 
 # Knoten zeichnen
 nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')  # Kleinere Knoten
