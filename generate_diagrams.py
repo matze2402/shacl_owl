@@ -46,7 +46,7 @@ for node in all_nodes:
 for edge in edges:
     from_node, to_node, relation, target = edge
     G.add_edge(from_node, to_node)
-    G.add_edge(to_node, target, label=f"target ({relation})")  # Verbindung zwischen to_node und target
+    G.add_edge(to_node, target, label=relation)  # Verbindung zwischen to_node und target
 
 # Diagramm erstellen
 plt.figure(figsize=(12, 9))
