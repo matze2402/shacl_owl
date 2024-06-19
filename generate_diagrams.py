@@ -25,7 +25,7 @@ for filename in os.listdir(folder_path):
         # Überprüfen, ob die notwendigen Spalten vorhanden sind
         if {'from_node', 'to_node', 'relation', 'target'}.issubset(edges_df.columns):
             # Zu Kanten (from_node, to_node, relation, target) konvertieren und zur Liste hinzufügen
-            edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['Relation'], edges_df['Target'])))
+            edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['relation'], edges_df['target'])))
         else:
             print(f"Fehlende Spalten in Datei: {filename}")
 
