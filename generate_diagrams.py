@@ -52,7 +52,7 @@ for edge in edges:
 
 plt.figure(figsize=(12, 9))
 
-pos = nx.spring_layout(G, k=2, iterations=50)
+pos = nx.spring_layout(G, k=10, iterations=50)
 
 # Knoten zeichnen
 nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')
