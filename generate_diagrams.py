@@ -22,8 +22,8 @@ for filename in os.listdir(folder_path):
         # Tabelle aus der CSV-Datei einlesen
         edges_df = pd.read_csv(file_path)
         
-        # Zu Kanten (from_node, to_node, relation) konvertieren und zur Liste hinzufügen
-        edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['relation'])))
+        # Zu Kanten (from_node, to_node, relation, target) konvertieren und zur Liste hinzufügen
+        edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['relation'], edges_df['target'])))
 
 # Graph erstellen
 G = nx.DiGraph()
@@ -33,14 +33,16 @@ all_nodes = set()
 for edge in edges:
     all_nodes.add(edge[0])
     all_nodes.add(edge[1])
+    all_nodes.add(edge[3])  # target auch als Knoten hinzufügen
 
 for node in all_nodes:
     G.add_node(node)
 
 # Kanten hinzufügen
 for edge in edges:
-    from_node, to_node, relation = edge
+    from_node, to_node, relation, target = edge
     G.add_edge(from_node, to_node, label=relation)
+    G.add_edge(to_node, target, label=f"target ({relation})")  # Verbindung zwischen to_node und target
 
 # Diagramm erstellen
 pos = nx.spring_layout(G)
