@@ -1,7 +1,7 @@
 from_node,to_node,relation
-Test,x,y
-Test2,a,b
-Test3,c,d
-Test4,f,g
-Test5,r,o
-Test6,v,m
+Test,x,y,G1
+Test2,a,b,H1
+Test3,c,d,I1
+Test4,f,g,J1
+Test5,r,o,K1
+Test6,v,m,L1
