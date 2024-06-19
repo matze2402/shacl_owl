@@ -50,9 +50,19 @@ for edge in edges:
 
 # Diagramm erstellen
 pos = nx.spring_layout(G)
-plt.figure(figsize=(10, 7))
-nx.draw(G, pos, with_labels=True, node_size=3000, node_color='lightblue', font_size=10, font_weight='bold')
+plt.figure(figsize=(12, 9))
+
+# Knoten zeichnen
+nx.draw_networkx_nodes(G, pos, node_size=3000, node_color='lightblue')
+
+# Kanten zeichnen
+nx.draw_networkx_edges(G, pos, width=2, edge_color='gray')
+
+# Kantenbeschriftungen zeichnen
 nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d['label'] for u, v, d in G.edges(data=True)})
+
+# Knotenbeschriftungen zeichnen
+nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
 
 # Diagramm speichern
 plt.title('Automatisiertes Diagramm für alle CSV-Dateien')
