@@ -35,6 +35,10 @@ construct_lines = []
 where_lines = []
 edges = []
 
+# Variablen zur Verwendung in den Sparql-Query
+variables = ['x', 'y', 'z', 'w', 'v', 'u', 't', 's', 'r', 'q']
+var_index = 0
+
 # Durch die gesammelten Daten iterieren
 for record in data:
     from_node = record['From']
@@ -44,15 +48,22 @@ for record in data:
     
     # Bedingungen für das Konstruktions- und Abfrageformat hinzufügen
     if from_node and to_node:
-        construct_lines.append(f" ?variable_{to_node.lower()}  some  {to_node}.")
-        where_lines.append(f" ?variable_{from_node.lower()}  some  {from_node}.")
+        from_var = f"?variable_{variables[var_index]}"
+        to_var = f"?variable_{variables[var_index + 1]}"
+        construct_lines.append(f" {from_var} some {to_var}.")
+        where_lines.append(f" {from_var} some {to_node}.")
+        var_index += 2
     if relation and target:
-        construct_lines.append(f" ?variable_{to_node.lower()}  {relation}  ?variable_{target.lower()}.")
-        where_lines.append(f" ?variable_{target.lower()}  some  {target}.")
-        edges.append((to_node, target, relation))
+        rel_var = f"?variable_{variables[var_index]}"
+        construct_lines.append(f" {from_var} {relation} {rel_var}.")
+        where_lines.append(f" {rel_var} some {target}.")
+        edges.append((from_node, target, relation))
+        var_index += 1
     elif relation:
-        construct_lines.append(f" ?variable_{to_node.lower()}  {relation}  ?variable_{to_node.lower()}.")
-        edges.append((to_node, to_node, relation))
+        rel_var = f"?variable_{variables[var_index]}"
+        construct_lines.append(f" {from_var} {relation} {rel_var}.")
+        edges.append((from_node, from_node, relation))
+        var_index += 1
 
 # Textdatei-Inhalt erstellen
 construct_text = "CONSTRUCT {  \n" + "\n".join(construct_lines) + "\n} \n"
@@ -73,32 +84,4 @@ G = nx.DiGraph()
 all_nodes = set()
 for edge in edges:
     from_node, to_node, relation = edge
-    all_nodes.add(from_node)
-    all_nodes.add(to_node)
-    G.add_edge(from_node, to_node, label=relation)
-
-# Diagramm erstellen
-plt.figure(figsize=(12, 9))
-
-# Verwenden Sie ein Layout, das die Knoten weiter auseinander hält
-pos = nx.spring_layout(G, k=2, iterations=50)  # Erhöhen Sie den Wert von k, um die Knoten weiter auseinander zu bringen
-
-# Knoten zeichnen
-nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')  # Kleinere Knoten
-
-# Kanten zeichnen
-nx.draw_networkx_edges(G, pos, width=2, edge_color='gray')
-
-# Kantenbeschriftungen zeichnen
-edge_labels = {(u, v): d['label'] for u, v, d in G.edges(data=True) if 'label' in d}
-nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-
-# Knotenbeschriftungen zeichnen
-nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
-
-# Diagramm speichern
-plt.title('Automatisiertes Diagramm für alle CSV-Dateien')
-plt.savefig(f'{output_dir}/automated_diagram_all.png')
-plt.close()
-
-print("Diagramm für alle CSV-Dateien erfolgreich erstellt und gespeichert.")
+    all_nodes.add(from_node
