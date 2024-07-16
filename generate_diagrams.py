@@ -1,17 +1,15 @@
 import os
-import matplotlib.pyplot as plt
-import networkx as nx
 import pandas as pd
 
 # Pfad zum Ordner, in dem die CSV-Dateien liegen (relativ zum aktuellen Arbeitsverzeichnis)
 folder_path = 'csv'  # Ändere dies entsprechend deinem Ordnerpfad
 
-# Verzeichnis für Diagramme erstellen, wenn es noch nicht existiert
-output_dir = 'diagrams'
+# Verzeichnis für Textdateien erstellen, wenn es noch nicht existiert
+output_dir = 'text_files'
 os.makedirs(output_dir, exist_ok=True)
 
-# Liste für alle Kanten aus allen CSV-Dateien
-edges = []
+# Liste für alle Daten aus allen CSV-Dateien
+data = []
 
 # Durch alle Dateien im Ordner iterieren
 for filename in os.listdir(folder_path):
@@ -23,53 +21,42 @@ for filename in os.listdir(folder_path):
         edges_df = pd.read_csv(file_path)
         
         # Überprüfen, ob die notwendigen Spalten vorhanden sind
-        if {'from_node', 'to_node', 'relation', 'target'}.issubset(edges_df.columns):
-            # Zu Kanten (from_node, to_node, relation, target) konvertieren und zur Liste hinzufügen
-            edges.extend(list(zip(edges_df['from_node'], edges_df['to_node'], edges_df['relation'], edges_df['target'])))
+        if {'From', 'To', 'relation', 'target'}.issubset(edges_df.columns):
+            # Daten hinzufügen und '-' Einträge ignorieren
+            edges_df.replace('-', '', inplace=True)
+            data.extend(edges_df.to_dict('records'))
         else:
             print(f"Fehlende Spalten in Datei: {filename}")
 
-# Graph erstellen
-G = nx.DiGraph()
+# Variablen für die Ausgabe
+construct_lines = []
+where_lines = []
 
-# Alle Knoten hinzufügen
-all_nodes = set()
-for edge in edges:
-    all_nodes.add(edge[0])
-    all_nodes.add(edge[1])
-    all_nodes.add(edge[3])  # Target auch als Knoten hinzufügen
+# Durch die gesammelten Daten iterieren
+for record in data:
+    from_node = record['From']
+    to_node = record['To']
+    relation = record['relation']
+    target = record['target']
+    
+    # Bedingungen für das Konstruktions- und Abfrageformat hinzufügen
+    if from_node and to_node:
+        construct_lines.append(f" ?variable_{to_node.lower()}  some  {to_node}.")
+        where_lines.append(f" ?variable_{from_node.lower()}  some  {from_node}.")
+    if relation and target:
+        construct_lines.append(f" ?variable_{to_node.lower()}  {relation}  ?variable_{target.lower()}.")
+        where_lines.append(f" ?variable_{target.lower()}  some  {target}.")
+    elif relation:
+        construct_lines.append(f" ?variable_{to_node.lower()}  {relation}  ?variable_{to_node.lower()}.")
 
-for node in all_nodes:
-    G.add_node(node)
+# Textdatei-Inhalt erstellen
+construct_text = "CONSTRUCT {  \n" + "\n".join(construct_lines) + "\n} \n"
+where_text = "WHERE {  \n" + "\n".join(where_lines) + "\n} \n"
+output_text = construct_text + where_text
 
-# Kanten hinzufügen
-for edge in edges:
-    from_node, to_node, relation, target = edge
-    G.add_edge(from_node, to_node)
-    G.add_edge(to_node, target, label=relation)  # Verbindung zwischen to_node und target
+# Textdatei speichern
+output_file_path = os.path.join(output_dir, 'generated_query.txt')
+with open(output_file_path, 'w') as file:
+    file.write(output_text)
 
-# Diagramm erstellen
-plt.figure(figsize=(12, 9))
-
-# Verwenden Sie ein Layout, das die Knoten weiter auseinander hält
-pos = nx.spring_layout(G, k=100, iterations=50)  # Erhöhen Sie den Wert von k, um die Knoten weiter auseinander zu bringen
-
-# Knoten zeichnen
-nx.draw_networkx_nodes(G, pos, node_size=500, node_color='lightblue')  # Kleinere Knoten
-
-# Kanten zeichnen
-nx.draw_networkx_edges(G, pos, width=2, edge_color='gray')
-
-# Kantenbeschriftungen zeichnen (nur für die Zielrelationen)
-edge_labels = {(u, v): d['label'] for u, v, d in G.edges(data=True) if 'label' in d}
-nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-
-# Knotenbeschriftungen zeichnen
-nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
-
-# Diagramm speichern
-plt.title('Automatisiertes Diagramm für alle CSV-Dateien')
-plt.savefig(f'{output_dir}/automated_diagram_all.png')
-plt.close()
-
-print("Diagramm für alle CSV-Dateien erfolgreich erstellt und gespeichert.")
+print(f"Textdatei erfolgreich erstellt und gespeichert unter: {output_file_path}")
