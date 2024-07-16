@@ -56,20 +56,20 @@ for record in data:
     if from_node and to_node:
         var_from = next(variable_names)
         var_to = next(variable_names)
-        construct_some_lines.append(f"{var_to} some {to_node}.")
-        where_lines.append(f"{var_from} some {from_node}.")
+        construct_some_lines.append(f"\t{var_to} some {to_node}.")
+        where_lines.append(f"\t{var_from} some {from_node}.")
     if relation and target:
         var_target = next(variable_names)
-        construct_rest_lines.append(f"{var_to} {relation} {var_target}.")
-        where_lines.append(f"{var_target} some {target}.")
+        construct_rest_lines.append(f"\t{var_to} {relation} {var_target}.")
+        where_lines.append(f"\t{var_target} some {target}.")
         edges.append((to_node, target, relation))
     elif relation:
-        construct_rest_lines.append(f"{var_to} {relation} {var_to}.")
+        construct_rest_lines.append(f"\t{var_to} {relation} {var_to}.")
         edges.append((to_node, to_node, relation))
 
 # Textdatei-Inhalt erstellen
-construct_text = "CONSTRUCT { \n\n" + "\n\n".join(construct_some_lines) + "\n\n" + "\n".join(construct_rest_lines) + "\n\n} \n"
-where_text = "WHERE { \n\n" + "\n\n".join(where_lines) + "\n\n} \n"
+construct_text = "CONSTRUCT { \n\n" + "\n".join(construct_some_lines) + "\n\n" + "\n".join(construct_rest_lines) + "\n\n} \n"
+where_text = "WHERE { \n\n" + "\n".join(where_lines) + "\n\n} \n"
 output_text = construct_text + where_text
 
 # Textdatei speichern
