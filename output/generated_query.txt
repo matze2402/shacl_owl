@@ -4,6 +4,7 @@ CONSTRUCT {
  ?h some ExperimentSetup.
  ?l some Sample.
  ?n some Parameters.
+
  ?b hasExperimentSetup ?c.
  ?e hasMeasurementStep ?f.
  ?h performedWith ?i.
