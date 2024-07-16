@@ -1,4 +1,4 @@
-name: Generate Diagrams
+name: Update Diagram and Query
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -16,21 +16,21 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'
+        python-version: 3.x
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas matplotlib networkx
-    
-    - name: Generate diagrams
+        pip install matplotlib networkx pandas
+
+    - name: Run script to generate query and diagram
       run: |
         python generate_diagrams.py
 
-    - name: Commit diagrams
+    - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
-        git add diagrams/
-        git commit -m 'Automated diagram update'
+        git add output/
+        git commit -m "Add generated query text file and diagram"
         git push origin main
