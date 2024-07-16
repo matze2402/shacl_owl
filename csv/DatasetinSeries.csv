@@ -2,6 +2,6 @@ From,To,relation,target
 Process,Experiment,hasExperimentSetup,ExperimentStep
 Process,CatalystPerformanceAssay,hasMeasurementStep,ExperimentStep
 ProcessStep,ExperimentStep,performedWith,Parameters
--,-,hasSample,Sample
+-,ExperimentStep,hasSample,Sample
 Input,Sample,-,-
 Inputsettings,Parameters,-,-
