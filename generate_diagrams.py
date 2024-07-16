@@ -63,7 +63,7 @@ for record in data:
         edges.append((to_node, to_node, relation))
 
 # Textdatei-Inhalt erstellen
-construct_text = "CONSTRUCT {  \n" + "\n".join(construct_some_lines) + "\n" + "\n".join(construct_rest_lines) + "\n} \n"
+construct_text = "CONSTRUCT {  \n" + "\n".join(construct_some_lines) + "\n\n" + "\n".join(construct_rest_lines) + "\n} \n"
 where_text = "WHERE {  \n" + "\n".join(where_lines) + "\n} \n"
 output_text = construct_text + where_text
 
