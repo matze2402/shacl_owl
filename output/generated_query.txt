@@ -1,23 +1,39 @@
-CONSTRUCT {  
- ?b some Experiment.
- ?e some CatalystPerformanceAssay.
- ?h some ExperimentSetup.
- ?l some Sample.
- ?n some Parameters.
+CONSTRUCT { 
 
- ?b hasExperimentSetup ?c.
- ?e hasMeasurementStep ?f.
- ?h performedWith ?i.
- ?h hasSample ?j.
+?variable_b some Experiment.
+
+?variable_e some CatalystPerformanceAssay.
+
+?variable_h some ExperimentSetup.
+
+?variable_l some Sample.
+
+?variable_n some Parameters.
+
+?variable_b hasExperimentSetup ?variable_c.
+?variable_e hasMeasurementStep ?variable_f.
+?variable_h performedWith ?variable_i.
+?variable_h hasSample ?variable_j.
+
 } 
-WHERE {  
- ?a some Process.
- ?c some ExperimentStep.
- ?d some Process.
- ?f some ExperimentStep.
- ?g some ProcessStep.
- ?i some Parameters.
- ?j some Sample.
- ?k some Input.
- ?m some Inputsettings.
+WHERE { 
+
+?variable_a some Process.
+
+?variable_c some ExperimentStep.
+
+?variable_d some Process.
+
+?variable_f some ExperimentStep.
+
+?variable_g some ProcessStep.
+
+?variable_i some Parameters.
+
+?variable_j some Sample.
+
+?variable_k some Input.
+
+?variable_m some Inputsettings.
+
 } 
