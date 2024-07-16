@@ -2,6 +2,7 @@ import os
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
+import string
 
 # Pfad zum Ordner, in dem die CSV-Dateien liegen (relativ zum aktuellen Arbeitsverzeichnis)
 folder_path = 'csv'  # Ändere dies entsprechend deinem Ordnerpfad
@@ -35,9 +36,8 @@ construct_lines = []
 where_lines = []
 edges = []
 
-# Variablen zur Verwendung in den Sparql-Query
-variables = ['x', 'y', 'z', 'w', 'v', 'u', 't', 's', 'r', 'q']
-var_index = 0
+# Generator für Variablennamen
+variable_names = (f"?{c}" for c in string.ascii_lowercase)
 
 # Durch die gesammelten Daten iterieren
 for record in data:
@@ -48,22 +48,18 @@ for record in data:
     
     # Bedingungen für das Konstruktions- und Abfrageformat hinzufügen
     if from_node and to_node:
-        from_var = f"?variable_{variables[var_index]}"
-        to_var = f"?variable_{variables[var_index + 1]}"
-        construct_lines.append(f" {from_var} some {to_var}.")
-        where_lines.append(f" {from_var} some {to_node}.")
-        var_index += 2
+        var_from = next(variable_names)
+        var_to = next(variable_names)
+        construct_lines.append(f" {var_to} some {to_node}.")
+        where_lines.append(f" {var_from} some {from_node}.")
     if relation and target:
-        rel_var = f"?variable_{variables[var_index]}"
-        construct_lines.append(f" {from_var} {relation} {rel_var}.")
-        where_lines.append(f" {rel_var} some {target}.")
-        edges.append((from_node, target, relation))
-        var_index += 1
+        var_target = next(variable_names)
+        construct_lines.append(f" {var_to} {relation} {var_target}.")
+        where_lines.append(f" {var_target} some {target}.")
+        edges.append((to_node, target, relation))
     elif relation:
-        rel_var = f"?variable_{variables[var_index]}"
-        construct_lines.append(f" {from_var} {relation} {rel_var}.")
-        edges.append((from_node, from_node, relation))
-        var_index += 1
+        construct_lines.append(f" {var_to} {relation} {var_to}.")
+        edges.append((to_node, to_node, relation))
 
 # Textdatei-Inhalt erstellen
 construct_text = "CONSTRUCT {  \n" + "\n".join(construct_lines) + "\n} \n"
@@ -85,6 +81,7 @@ all_nodes = set()
 for edge in edges:
     from_node, to_node, relation = edge
     all_nodes.add(from_node)
+    all_nodes.add(to_node)
     G.add_edge(from_node, to_node, label=relation)
 
 # Diagramm erstellen
