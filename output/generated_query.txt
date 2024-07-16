@@ -1,0 +1,23 @@
+CONSTRUCT {  
+ ?b some Experiment.
+ ?e some CatalystPerformanceAssay.
+ ?h some ExperimentStep.
+ ?l some Sample.
+ ?n some Parameters.
+
+ ?b hasExperimentSetup ?c.
+ ?e hasMeasurementStep ?f.
+ ?h performedWith ?i.
+ ?h hasSample ?j.
+} 
+WHERE {  
+ ?a some Process.
+ ?c some ExperimentStep.
+ ?d some Process.
+ ?f some ExperimentStep.
+ ?g some ProcessStep.
+ ?i some Parameters.
+ ?j some Sample.
+ ?k some Input.
+ ?m some Inputsettings.
+} 
