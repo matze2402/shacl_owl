@@ -1,22 +1,22 @@
 CONSTRUCT {  
- ?variable_experiment  some  Experiment.
- ?variable_experiment  hasExperimentSetup  ?variable_experimentstep.
- ?variable_catalystperformanceassay  some  CatalystPerformanceAssay.
- ?variable_catalystperformanceassay  hasMeasurementStep  ?variable_experimentstep.
- ?variable_experimentsetup  some  ExperimentSetup.
- ?variable_experimentsetup  performedWith  ?variable_parameters.
- ?variable_  hasSample  ?variable_sample.
- ?variable_sample  some  Sample.
- ?variable_parameters  some  Parameters.
+ ?b some Experiment.
+ ?b hasExperimentSetup ?c.
+ ?e some CatalystPerformanceAssay.
+ ?e hasMeasurementStep ?f.
+ ?h some ExperimentSetup.
+ ?h performedWith ?i.
+ ?h hasSample ?j.
+ ?l some Sample.
+ ?n some Parameters.
 } 
 WHERE {  
- ?variable_process  some  Process.
- ?variable_experimentstep  some  ExperimentStep.
- ?variable_process  some  Process.
- ?variable_experimentstep  some  ExperimentStep.
- ?variable_processstep  some  ProcessStep.
- ?variable_parameters  some  Parameters.
- ?variable_sample  some  Sample.
- ?variable_input  some  Input.
- ?variable_inputsettings  some  Inputsettings.
+ ?a some Process.
+ ?c some ExperimentStep.
+ ?d some Process.
+ ?f some ExperimentStep.
+ ?g some ProcessStep.
+ ?i some Parameters.
+ ?j some Sample.
+ ?k some Input.
+ ?m some Inputsettings.
 } 
