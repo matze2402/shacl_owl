@@ -1,13 +1,13 @@
 CONSTRUCT {  
  ?b some Experiment.
- ?b hasExperimentSetup ?c.
  ?e some CatalystPerformanceAssay.
- ?e hasMeasurementStep ?f.
  ?h some ExperimentSetup.
- ?h performedWith ?i.
- ?h hasSample ?j.
  ?l some Sample.
  ?n some Parameters.
+ ?b hasExperimentSetup ?c.
+ ?e hasMeasurementStep ?f.
+ ?h performedWith ?i.
+ ?h hasSample ?j.
 } 
 WHERE {  
  ?a some Process.
