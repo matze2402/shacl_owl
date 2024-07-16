@@ -1,7 +1,7 @@
 CONSTRUCT {  
  ?b some Experiment.
  ?e some CatalystPerformanceAssay.
- ?h some ExperimentSetup.
+ ?h some ExperimentStep.
  ?l some Sample.
  ?n some Parameters.
 
