@@ -1,4 +1,5 @@
 import os
+import shutil
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
@@ -9,6 +10,10 @@ folder_path = 'csv'  # Ändere dies entsprechend deinem Ordnerpfad
 
 # Verzeichnis für Diagramme und Textdateien erstellen, wenn es noch nicht existiert
 output_dir = 'output'
+
+# Output-Ordner löschen, falls er existiert, und neu erstellen
+if os.path.exists(output_dir):
+    shutil.rmtree(output_dir)
 os.makedirs(output_dir, exist_ok=True)
 
 # Liste für alle Daten aus allen CSV-Dateien
@@ -38,7 +43,7 @@ where_lines = []
 edges = []
 
 # Generator für Variablennamen
-variable_names = (f"?{c}" for c in string.ascii_lowercase)
+variable_names = (f"?variable_{c}" for c in string.ascii_lowercase)
 
 # Durch die gesammelten Daten iterieren
 for record in data:
@@ -51,20 +56,20 @@ for record in data:
     if from_node and to_node:
         var_from = next(variable_names)
         var_to = next(variable_names)
-        construct_some_lines.append(f" {var_to} some {to_node}.")
-        where_lines.append(f" {var_from} some {from_node}.")
+        construct_some_lines.append(f"{var_to} some {to_node}.")
+        where_lines.append(f"{var_from} some {from_node}.")
     if relation and target:
         var_target = next(variable_names)
-        construct_rest_lines.append(f" {var_to} {relation} {var_target}.")
-        where_lines.append(f" {var_target} some {target}.")
+        construct_rest_lines.append(f"{var_to} {relation} {var_target}.")
+        where_lines.append(f"{var_target} some {target}.")
         edges.append((to_node, target, relation))
     elif relation:
-        construct_rest_lines.append(f" {var_to} {relation} {var_to}.")
+        construct_rest_lines.append(f"{var_to} {relation} {var_to}.")
         edges.append((to_node, to_node, relation))
 
 # Textdatei-Inhalt erstellen
-construct_text = "CONSTRUCT {  \n" + "\n".join(construct_some_lines) + "\n\n" + "\n".join(construct_rest_lines) + "\n} \n"
-where_text = "WHERE {  \n" + "\n".join(where_lines) + "\n} \n"
+construct_text = "CONSTRUCT { \n\n" + "\n\n".join(construct_some_lines) + "\n\n" + "\n".join(construct_rest_lines) + "\n\n} \n"
+where_text = "WHERE { \n\n" + "\n\n".join(where_lines) + "\n\n} \n"
 output_text = construct_text + where_text
 
 # Textdatei speichern
