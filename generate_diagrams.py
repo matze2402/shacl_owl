@@ -3,7 +3,7 @@ import shutil
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-import string
+import string 
 
 # Pfad zum Ordner, in dem die CSV-Dateien liegen (relativ zum aktuellen Arbeitsverzeichnis)
 folder_path = 'csv'  # Ändere dies entsprechend deinem Ordnerpfad
